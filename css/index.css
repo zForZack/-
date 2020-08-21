@@ -2,7 +2,7 @@
 html,body{
     width: 100%;
     height: 100%;
-    background-color: #fff;
+    background-color: #f0f2f5!important;
     font-family: 'Microsoft YaHei Regular', 'Microsoft YaHei';
 }
 .main{
@@ -62,7 +62,7 @@ html,body{
     padding-right: 2rem;
 }
 .btn{
-    width: 100px;
+    min-width: 100px;
 }
 .icon{
     position: relative;
@@ -118,4 +118,75 @@ input[type='date']::-webkit-clear-button{
 }
 input[type='date']::-webkit-calendar-picker-indicator{
     display:inline-block;
+}
+.tongji-all,.case-analysis,.case-ranking{
+    margin-top: 3rem;
+    background-color: #fff;
+    height: auto;
+}
+.all-header,.case-header{
+    border-bottom: 1px solid #b7b7b7 ;
+}
+.all-header-content,.case-header-content{
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+    padding-left: 2rem;
+}
+.all-header-content div:first-child,.case-header-content>div:first-child{
+    display: inline-block;
+    width: 83px;
+    height: 50px;
+    text-align: center;
+    font-weight: bold;
+}
+.all-header-content span{
+    color: #999;
+}
+.case-header div{
+    display: inline-block;
+}
+.case-bread {
+    display: inline-block;
+    padding-left: 1rem;
+}
+.case-bread div{
+    display: inline-block;
+    width: 115px;
+    height: 50px;
+    text-align: center;
+    cursor: pointer;
+}
+.case-bread div:hover{
+    color: #1890ff;
+}
+.case-bread .active {
+    color: #1890ff;
+    border-bottom: 2px solid #1890ff;
+}
+.case-month{
+    position: absolute;
+    right: 5rem;
+}
+.case-month .btn{
+    min-width: 68px!important;
+}
+.case-month .dropdown-menu ul{
+    width: 60px;
+}
+.case-month .dropdown-menu li{
+    width: 68px;
+    text-align: center;
+}
+.case-chart{
+    width: 100%;
+    height: 400px;
+}
+.ranking-pages{
+    position: absolute;
+    right: 5rem;
+}
+.ranking-chart{
+    width: 100%;
+    height: 400px;
 }
