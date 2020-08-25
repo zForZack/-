@@ -178,7 +178,14 @@
                     type: 'bar',//种类——柱形
                     barWidth: 40,//柱子宽度
                     itemStyle: {
-                        color: '#3ba1ff'
+                        color: function(params){
+                            var key = params.dataIndex;
+                            if(key <= '2'){
+                                return '#ff0000cc'//点击后的颜色
+                            }else{
+                                return '#00cccca5'//不点击的颜色
+                            }
+					    }
                     },
                     z:1,//类似z-index
                     data: [750, 650, 550, 450, 350, 251, 150, 150, 160, 170],
@@ -244,11 +251,56 @@
                 </div>
             </div>
         </div>
+        <!-- 统计总览 -->
         <div class="tongji-all">
             <div class="all-header">
                 <div class="all-header-content">
                     <div>统计总览</div>
                     <span>数据更新至 2020.07.29 10:13</span>
+                </div>
+            </div>
+            <div class="all-data">
+                <div class="data-item">
+                    <p>申请次数</p>
+                    <div class="data-info">
+                        9,999<span>次</span>
+                    </div>
+                    <p class="data-foot">近一个月申请次数：30,000 次</p>
+                </div>
+                <div class="data-item">
+                    <p>办理次数</p>
+                    <div class="data-info">
+                        99,999<span>次</span>
+                    </div>
+                    <p class="data-foot">近一个月办理次数：30,000 次</p>
+                </div>
+                <div class="data-item">
+                    <p>服务数量</p>
+                    <div class="data-info">
+                        89<span>（使用）</span><span class="bar">|</span>99<span>（总数）个</span>
+                    </div>
+                    <p class="data-foot">近一个月新增服务：3个</p>
+                </div>
+                <div class="data-item">
+                    <p>进行中的流程</p>
+                    <div class="data-info">
+                        1,000<span>个</span>
+                    </div>
+                    <p class="data-foot">近一个月进行中的流程：500 个</p>
+                </div>
+                <div class="data-item">
+                    <p>服务平均响应时长</p>
+                    <div class="data-info">
+                        4D<span style="font-size:20px">3h 31m 59s</span>
+                    </div>
+                    <p class="data-foot">近一个月服务平均响应时长：4d 3h 31m 59s</p>
+                </div>
+                <div class="data-item">
+                    <p>办结率</p>
+                    <div class="data-info">
+                        100<span>%</span>
+                    </div>
+                    <p class="data-foot">近一个月办结率：80 %</p>
                 </div>
             </div>
         </div>
