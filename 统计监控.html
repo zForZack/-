@@ -10,6 +10,7 @@
     <script src="./js/jquery-3.3.1.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>
     <script src="./js/echarts.min .js"></script>
+    <script src="./js/html2canvas.min.js"></script>
     <script>
         $(function(){
             $(".switch div").click(function(){
@@ -137,6 +138,33 @@
     </script>
     <script>
         $(function(){
+            //统计总览 截图并下载
+            var canvas2 = document.createElement("canvas");
+            var _canvas = document.getElementsByClassName('all-data')[0];
+            var w = parseInt(window.getComputedStyle(_canvas).width);
+            var h = parseInt(window.getComputedStyle(_canvas).height);
+            //将canvas画布放大若干倍，然后盛放在较小的容器内，就显得不模糊了
+            canvas2.width = w * 2;
+            canvas2.height = h * 2;
+            canvas2.style.width = w + "px";
+            canvas2.style.height = h + "px";
+            var context = canvas2.getContext("2d");
+            context.scale(2, 2);
+             //设置context位置，值为相对于视窗的偏移量负值，让图片复位(解决偏移的重点)
+            context.translate(0,0);
+            var opts = {
+                canvas: canvas2,
+                scrollY: 0, // 纵向偏移量 写死0 可以避免滚动造成偶尔偏移的现象
+            };
+            html2canvas(document.querySelector('.all-data'), opts).then(function(canvas) {
+                //document.body.appendChild(canvas);
+                //canvas转换成url，然后利用a标签的download属性，直接下载，绕过上传服务器再下载
+                document.querySelector(".down").setAttribute('href', canvas.toDataURL());
+            });
+        });
+    </script>
+    <script>
+        $(function(){
             //实例排名chart初始化
             var myChart = echarts.init(document.getElementsByClassName('ranking-chart')[0]);
             var option = {
@@ -181,9 +209,9 @@
                         color: function(params){
                             var key = params.dataIndex;
                             if(key <= '2'){
-                                return '#ff0000cc'//点击后的颜色
+                                return '#ff0000cc'//前三名的柱子颜色
                             }else{
-                                return '#00cccca5'//不点击的颜色
+                                return '#00cccca5'//后面的柱子颜色
                             }
 					    }
                     },
@@ -196,6 +224,460 @@
                         formatter: '{c}次',//数值的展示形式
                         offset: [0,-10]//与原位置偏离度
                     }
+                }]
+            };
+            myChart.setOption(option);
+        });
+    </script>
+    <script>
+        $(function(){
+            //办结率排名chart初始化
+            var myChart = echarts.init(document.getElementsByClassName('completion-chart')[0]);
+            var option = {
+                title: [{
+                    text: '部门办结率排名',
+                    textStyle:{
+                        color: '#333',
+                        fontSize: '16'
+                    },
+                    left:'3%',
+                    top:'3%'
+                    },{
+                    text: '服务办结率排名',
+                    textStyle:{
+                        color: '#333',
+                        fontSize: '16'
+                    },
+                    left:'35%',
+                    top:'3%'
+                    },{
+                    text: '节点办结率排名',
+                    textStyle:{
+                        color: '#333',
+                        fontSize: '16'
+                    },
+                    left:'67%',
+                    top:'3%'
+                    }],
+                tooltip: {},
+                toolbox: {
+                    show: true,
+                    feature: {
+                        saveAsImage: {}//截图并下载
+                    }
+                },
+                grid: [
+                        {left: '3%', right: '74%', bottom: '5%', containLabel: true},
+                        {left: '35%', right: '42%', bottom: '5%', containLabel: true},
+                        {left: '67%', right: '7%', bottom: '5%', containLabel: true}
+                    ],
+                xAxis: [{
+                    type:'value',
+                    gridIndex: 0,
+                    axisTick:{//刻度线属性
+                        show: false
+                    },
+                    axisLine:{//轴线属性
+                        show: false
+                    },
+                    splitLine:{//y轴分隔线属性
+                        show: false
+                    },
+                    axisLabel:{
+                        show: false
+                    },
+                    max: '100'
+                },{
+                    type:'value',
+                    gridIndex: 1,
+                    axisTick:{//刻度线属性
+                        show: false
+                    },
+                    axisLine:{//轴线属性
+                        show: false
+                    },
+                    splitLine:{//y轴分隔线属性
+                        show: false
+                    },
+                    axisLabel:{
+                        show: false
+                    },
+                    max: '100'
+                },{
+                    type:'value',
+                    gridIndex: 2,
+                    axisTick:{//刻度线属性
+                        show: false
+                    },
+                    axisLine:{//轴线属性
+                        show: false
+                    },
+                    splitLine:{//y轴分隔线属性
+                        show: false
+                    },
+                    axisLabel:{
+                        show: false
+                    },
+                    max: '100'
+                }],
+                yAxis: [{
+                    type:'category',
+                    gridIndex: 0,
+                    axisLine:{//y轴属性
+                        show: false
+                    },
+                    axisTick:{//y轴刻度线属性
+                        show: false
+                    },
+                    splitLine:{//y轴分隔线属性
+                        show: false
+                    },
+                    inverse: true,
+                    boundaryGap: ['0%', '0%'],
+                    data: ["1 教育部门","2 信息部门","3 学工部门","4 后勤部门","5 财务部门","6 财务部门","7 财务部门","8 财务部门","9 财务部门","10 财务部门"],
+                    axisLabel: {
+                        fontSize: '15'
+                    }
+                },{
+                    type:'category',
+                    gridIndex: 1,
+                    axisLine:{//y轴属性
+                        show: false
+                    },
+                    axisTick:{//y轴刻度线属性
+                        show: false
+                    },
+                    splitLine:{//y轴分隔线属性
+                        show: false
+                    },
+                    inverse: true,
+                    boundaryGap: ['0%', '0%'],
+                    data: ["1 请假申请","2 销假申请","3 出差申请","4 调课申请","5 报销申请","6 报销申请","7 报销申请","8 报销申请","9 报销申请","10 报销申请"],
+                    axisLabel: {
+                        fontSize: '15'
+                    }
+                },{
+                    type:'category',
+                    gridIndex: 2,
+                    axisLine:{//y轴属性
+                        show: false
+                    },
+                    axisTick:{//y轴刻度线属性
+                        show: false
+                    },
+                    splitLine:{//y轴分隔线属性
+                        show: false
+                    },
+                    inverse: true,
+                    boundaryGap: ['0%', '0%'],
+                    data: ["1 请假申请_辅导员审核","2 请假申请_辅导员审核","3 请假申请_辅导员审核","4 请假申请_辅导员审核","5 请假申请_辅导员审核","6 请假申请_辅导员审核","7 请假申请_辅导员审核","8 请假申请_辅导员审核","9 请假申请_辅导员审核","10 请假申请_辅导员审核"],
+                    axisLabel: {
+                        fontSize: '15'
+                    }
+                }],
+                series: [{
+                    name: '部门办结率',
+                    type: 'bar',//种类——柱形
+                    barWidth: 9,//柱子宽度
+                    showBackground: true,
+                    backgroundStyle: {
+                        color: 'rgba(220, 220, 220, 0.8)',
+                        barBorderRadius:7
+                    },
+                    itemStyle: {
+                        color: '#1a92ea',
+                        barBorderRadius:7
+                    },
+                    z:1,//类似z-index
+                    data: [75, 65, 55, 45, 35, 25, 15, 15, 16, 17],
+                    label:{//数值文字显示
+                        show:true,//是否显示
+                        position: 'insideleft',
+                        color: '#666',
+                        fontSize: '14',
+                        formatter: '{c}%',//数值的展示形式
+                        offset: [320,0]//与原位置偏离度
+                    }
+                },{
+                    name: '服务办结率',
+                    type: 'bar',//种类——柱形
+                    barWidth: 9,//柱子宽度
+                    showBackground: true,
+                    backgroundStyle: {
+                        color: 'rgba(220, 220, 220, 0.8)',
+                        barBorderRadius:7
+                    },
+                    itemStyle: {
+                        color: '#1a92ea',
+                        barBorderRadius:7
+                    },
+                    z:1,//类似z-index
+                    data: [95, 85, 75, 45, 35, 25, 15, 15, 16, 17],
+                    label:{//数值文字显示
+                        show:true,//是否显示
+                        position: 'insideleft',
+                        color: '#666',
+                        fontSize: '14',
+                        formatter: '{c}%',//数值的展示形式
+                        offset: [320,0]//与原位置偏离度
+                    },
+                    xAxisIndex: 1,
+                    yAxisIndex: 1
+                },{
+                    name: '节点办结率',
+                    type: 'bar',//种类——柱形
+                    barWidth: 9,//柱子宽度
+                    showBackground: true,
+                    backgroundStyle: {
+                        color: 'rgba(220, 220, 220, 0.8)',
+                        barBorderRadius:7
+                    },
+                    itemStyle: {
+                        color: '#1a92ea',
+                        barBorderRadius:7
+                    },
+                    z:1,//类似z-index
+                    data: [95, 85, 75, 45, 35, 25, 15, 15, 16, 17],
+                    label:{//数值文字显示
+                        show:true,//是否显示
+                        position: 'insideleft',
+                        color: '#666',
+                        fontSize: '14',
+                        formatter: '{c}%',//数值的展示形式
+                        offset: [300,0]//与原位置偏离度
+                    },
+                    xAxisIndex: 2,
+                    yAxisIndex: 2
+                }]
+            };
+            myChart.setOption(option);
+        });
+    </script>
+    <script>
+        $(function(){
+            //平均响应时长排名chart初始化
+            var myChart = echarts.init(document.getElementsByClassName('average-chart')[0]);
+            var option = {
+                title: [{
+                    text: '部门平均响应时长排名',
+                    textStyle:{
+                        color: '#333',
+                        fontSize: '16'
+                    },
+                    left:'3%',
+                    top:'3%'
+                    },{
+                    text: '服务平均响应时长排名',
+                    textStyle:{
+                        color: '#333',
+                        fontSize: '16'
+                    },
+                    left:'35%',
+                    top:'3%'
+                    },{
+                    text: '节点平均响应时长排名',
+                    textStyle:{
+                        color: '#333',
+                        fontSize: '16'
+                    },
+                    left:'67%',
+                    top:'3%'
+                    }],
+                tooltip: {},
+                toolbox: {
+                    show: true,
+                    feature: {
+                        saveAsImage: {}//截图并下载
+                    }
+                },
+                grid: [
+                        {left: '3%', right: '74%', bottom: '5%', containLabel: true},
+                        {left: '35%', right: '42%', bottom: '5%', containLabel: true},
+                        {left: '67%', right: '7%', bottom: '5%', containLabel: true}
+                    ],
+                xAxis: [{
+                    type:'value',
+                    gridIndex: 0,
+                    axisTick:{//刻度线属性
+                        show: false
+                    },
+                    axisLine:{//轴线属性
+                        show: false
+                    },
+                    splitLine:{//y轴分隔线属性
+                        show: false
+                    },
+                    axisLabel:{
+                        show: false
+                    },
+                    max: function (value) {
+                        return value.max + 5;
+                    }
+                },{
+                    type:'value',
+                    gridIndex: 1,
+                    axisTick:{//刻度线属性
+                        show: false
+                    },
+                    axisLine:{//轴线属性
+                        show: false
+                    },
+                    splitLine:{//y轴分隔线属性
+                        show: false
+                    },
+                    axisLabel:{
+                        show: false
+                    },
+                    max: function (value) {
+                        return value.max + 20;
+                    }
+                },{
+                    type:'value',
+                    gridIndex: 2,
+                    axisTick:{//刻度线属性
+                        show: false
+                    },
+                    axisLine:{//轴线属性
+                        show: false
+                    },
+                    splitLine:{//y轴分隔线属性
+                        show: false
+                    },
+                    axisLabel:{
+                        show: false
+                    },
+                    max: function (value) {
+                        return value.max + 20;
+                    }
+                }],
+                yAxis: [{
+                    type:'category',
+                    gridIndex: 0,
+                    axisLine:{//y轴属性
+                        show: false
+                    },
+                    axisTick:{//y轴刻度线属性
+                        show: false
+                    },
+                    splitLine:{//y轴分隔线属性
+                        show: false
+                    },
+                    inverse: true,
+                    boundaryGap: ['0%', '0%'],
+                    data: ["1 教育部门","2 信息部门","3 学工部门","4 后勤部门","5 财务部门","6 财务部门","7 财务部门","8 财务部门","9 财务部门","10 财务部门"],
+                    axisLabel: {
+                        fontSize: '15'
+                    }
+                },{
+                    type:'category',
+                    gridIndex: 1,
+                    axisLine:{//y轴属性
+                        show: false
+                    },
+                    axisTick:{//y轴刻度线属性
+                        show: false
+                    },
+                    splitLine:{//y轴分隔线属性
+                        show: false
+                    },
+                    inverse: true,
+                    boundaryGap: ['0%', '0%'],
+                    data: ["1 请假申请","2 销假申请","3 出差申请","4 调课申请","5 报销申请","6 报销申请","7 报销申请","8 报销申请","9 报销申请","10 报销申请"],
+                    axisLabel: {
+                        fontSize: '15'
+                    }
+                },{
+                    type:'category',
+                    gridIndex: 2,
+                    axisLine:{//y轴属性
+                        show: false
+                    },
+                    axisTick:{//y轴刻度线属性
+                        show: false
+                    },
+                    splitLine:{//y轴分隔线属性
+                        show: false
+                    },
+                    inverse: true,
+                    boundaryGap: ['0%', '0%'],
+                    data: ["1 请假申请_辅导员审核","2 请假申请_辅导员审核","3 请假申请_辅导员审核","4 请假申请_辅导员审核","5 请假申请_辅导员审核","6 请假申请_辅导员审核","7 请假申请_辅导员审核","8 请假申请_辅导员审核","9 请假申请_辅导员审核","10 请假申请_辅导员审核"],
+                    axisLabel: {
+                        fontSize: '15'
+                    }
+                }],
+                series: [{
+                    name: '部门办结率',
+                    type: 'bar',//种类——柱形
+                    barWidth: 9,//柱子宽度
+                    showBackground: true,
+                    backgroundStyle: {
+                        color: 'rgba(220, 220, 220, 0.8)',
+                        barBorderRadius:7
+                    },
+                    itemStyle: {
+                        color: '#1a92ea',
+                        barBorderRadius:7
+                    },
+                    z:1,//类似z-index
+                    data: ['153', '147', '132', '124', '116', '108', '95', '87', '65', '42'],
+                    label:{//数值文字显示
+                        show:true,//是否显示
+                        position: 'insideleft',
+                        color: '#666',
+                        fontSize: '14',
+                        formatter: '{c}',//数值的展示形式
+                        offset: [320,0]//与原位置偏离度
+                    }
+                },{
+                    name: '服务办结率',
+                    type: 'bar',//种类——柱形
+                    barWidth: 9,//柱子宽度
+                    showBackground: true,
+                    backgroundStyle: {
+                        color: 'rgba(220, 220, 220, 0.8)',
+                        barBorderRadius:7
+                    },
+                    itemStyle: {
+                        color: '#1a92ea',
+                        barBorderRadius:7
+                    },
+                    z:1,//类似z-index
+                    data: [95, 85, 75, 45, 35, 25, 15, 15, 16, 17],
+                    label:{//数值文字显示
+                        show:true,//是否显示
+                        position: 'insideleft',
+                        color: '#666',
+                        fontSize: '14',
+                        formatter: '{c}%',//数值的展示形式
+                        offset: [320,0]//与原位置偏离度
+                    },
+                    xAxisIndex: 1,
+                    yAxisIndex: 1
+                },{
+                    name: '节点办结率',
+                    type: 'bar',//种类——柱形
+                    barWidth: 9,//柱子宽度
+                    showBackground: true,
+                    backgroundStyle: {
+                        color: 'rgba(220, 220, 220, 0.8)',
+                        barBorderRadius:7
+                    },
+                    itemStyle: {
+                        color: '#1a92ea',
+                        barBorderRadius:7
+                    },
+                    z:1,//类似z-index
+                    data: [95, 85, 75, 45, 35, 25, 15, 15, 16, 17],
+                    label:{//数值文字显示
+                        show:true,//是否显示
+                        position: 'insideleft',
+                        color: '#666',
+                        fontSize: '14',
+                        formatter: '{c}%',//数值的展示形式
+                        offset: [300,0]//与原位置偏离度
+                    },
+                    xAxisIndex: 2,
+                    yAxisIndex: 2
                 }]
             };
             myChart.setOption(option);
@@ -257,6 +739,9 @@
                 <div class="all-header-content">
                     <div>统计总览</div>
                     <span>数据更新至 2020.07.29 10:13</span>
+                </div>
+                <div class="all-header-content-right" title="截图并下载">
+                    <a href="" class="down glyphicon glyphicon-download-alt" download="downImg"></a>
                 </div>
             </div>
             <div class="all-data">
@@ -344,14 +829,46 @@
                     </div>
                     <div class="ranking-pages">
                         <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                            <button type="button" class="btn btn-primary">前十名</button>
-                            <button type="button" class="btn btn-primary">后十名</button>
+                            <button type="button" class="btn btn-default">前十名</button>
+                            <button type="button" class="btn btn-default">后十名</button>
                         </div>
                         <button type="button" class="btn btn-inverse" style="margin-left: 1rem;">查看更多</button>
                     </div>
                 </div>
             </div>
             <div class="ranking-chart"></div>
+        </div>
+        <!-- 办结率排名 -->
+        <div class="completion-rate">
+            <div class="case-header">
+                <div class="case-header-content">
+                    <div>办结率排名</div>
+                    <div class="ranking-pages">
+                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                            <button type="button" class="btn btn-default">前十名</button>
+                            <button type="button" class="btn btn-default">后十名</button>
+                        </div>
+                        <button type="button" class="btn btn-inverse" style="margin-left: 1rem;">查看更多</button>
+                    </div>
+                </div>
+            </div>
+            <div class="completion-chart"></div>
+        </div>
+        <!-- 平均响应时长排名 -->
+        <div class="average-time">
+            <div class="case-header">
+                <div class="case-header-content">
+                    <div>平均响应时长排名</div>
+                    <div class="ranking-pages">
+                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                            <button type="button" class="btn btn-default">前十名</button>
+                            <button type="button" class="btn btn-default">后十名</button>
+                        </div>
+                        <button type="button" class="btn btn-inverse" style="margin-left: 1rem;">查看更多</button>
+                    </div>
+                </div>
+            </div>
+            <div class="average-chart"></div>
         </div>
     </div>
 </body>
