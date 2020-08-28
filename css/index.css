@@ -7,6 +7,9 @@ html,body{
 body{
     padding-bottom: 5rem;
 }
+a:visited,a:link {
+    text-decoration: none;
+}
 .main{
     height: 100%;
     padding:  0 2rem;
@@ -121,7 +124,7 @@ input[type='date']::-webkit-clear-button{
 input[type='date']::-webkit-calendar-picker-indicator{
     display:inline-block;
 }
-.tongji-all,.case-analysis,.case-ranking,.completion-rate,.average-time{
+.tongji-all,.case-analysis,.case-ranking,.completion-rate,.average-time,.department-info,.participant-analysis{
     margin-top: 3rem;
     background-color: #fff;
     height: auto;
@@ -235,10 +238,10 @@ input[type='date']::-webkit-calendar-picker-indicator{
     position: absolute;
     right: 5rem;
 }
-.ranking-chart,.completion-chart,.average-chart{
+.ranking-chart,.completion-chart,.average-chart,.department-chart,.participant-chart{
     width: 100%;
     height: 400px;
 }
-.average-time .case-header-content>div:first-child{
+.average-time .case-header-content>div:first-child,.department-info .case-header-content>div:first-child {
     width: 115px;
 }
